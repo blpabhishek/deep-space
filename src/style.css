@@ -1,0 +1,242 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #dfe6f2;
+  --ink-dim: #b9c3da;
+  --accent: #8fb0ff;
+  --panel: rgba(4, 8, 20, 0.55);
+  --line: rgba(140, 160, 220, 0.16);
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: #020209;
+  color: var(--ink);
+  font-family: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Fixed WebGL canvas behind everything */
+#webgl {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#webgl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Intro hero */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.intro h1 {
+  margin: 0.4rem 0;
+  font-size: clamp(2.4rem, 7vw, 4.8rem);
+  font-weight: 200;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.8);
+}
+
+.intro .sub {
+  margin: 0;
+  color: var(--ink-dim);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.scroll-hint .arrow {
+  display: block;
+  text-align: center;
+  animation: bob 2.2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+/* Scroll chapters */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.spacer {
+  height: 95vh;
+}
+
+.chapter {
+  height: 145vh;
+  position: relative;
+}
+
+.chapter .content {
+  position: sticky;
+  top: 32vh;
+  max-width: 34rem;
+  margin-left: clamp(1.25rem, 8vw, 7rem);
+  margin-right: 1.25rem;
+  padding: 1.5rem 1.8rem;
+  opacity: 0;
+  visibility: hidden;
+  background: linear-gradient(160deg, rgba(4, 8, 20, 0.68), rgba(4, 8, 20, 0.28));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.chapter h2 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+.chapter p:not(.kicker) {
+  margin: 0;
+  line-height: 1.75;
+  color: var(--ink-dim);
+}
+
+/* Alternate chapters to the right on wide screens */
+@media (min-width: 900px) {
+  .chapter:nth-child(even) .content {
+    margin-left: auto;
+    margin-right: clamp(1.5rem, 8vw, 7rem);
+  }
+}
+
+/* Footer */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 2rem 1.5rem 2.2rem;
+  text-align: center;
+}
+
+.site-footer .closing {
+  margin: 0 0 3rem;
+  color: var(--ink-dim);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.credit {
+  margin: 0;
+  font-size: 10px;
+  opacity: 0.5;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.sub-credit {
+  opacity: 0.32;
+}
+
+/* Motion toggle */
+#motion-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: rgba(8, 12, 26, 0.6);
+  border: 1px solid rgba(140, 160, 220, 0.28);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#motion-toggle:hover {
+  border-color: rgba(160, 180, 240, 0.55);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduced motion (system preference or manual toggle) */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint .arrow {
+    animation: none;
+  }
+}
+
+.reduced-motion .scroll-hint .arrow {
+  animation: none;
+}
+
+/* No-WebGL fallback: CSS gradient scenes per chapter */
+.no-webgl #webgl {
+  display: none;
+}
+
+.no-webgl body,
+.no-webgl main {
+  background: #020209;
+}
+
+.no-webgl .chapter {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.no-webgl #earth      { background-image: radial-gradient(80% 60% at 30% 80%, #12325e 0%, #061021 45%, #020209 100%); }
+.no-webgl #moon       { background-image: radial-gradient(50% 40% at 70% 40%, #3a3d45 0%, #0a0b10 55%, #020209 100%); }
+.no-webgl #mars       { background-image: radial-gradient(60% 50% at 30% 45%, #5e2712 0%, #170905 55%, #020209 100%); }
+.no-webgl #belt       { background-image: radial-gradient(90% 70% at 50% 50%, #201812 0%, #0a0705 60%, #020209 100%); }
+.no-webgl #giants     { background-image: radial-gradient(65% 55% at 65% 45%, #4a3a22 0%, #12100c 55%, #020209 100%); }
+.no-webgl #nebula     { background-image: radial-gradient(80% 65% at 45% 50%, #3a1a52 0%, #14082a 55%, #020209 100%); }
+.no-webgl #deep-field { background-image: radial-gradient(90% 70% at 50% 45%, #1a1a2e 0%, #050510 60%, #020209 100%); }
