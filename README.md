@@ -49,4 +49,4 @@ npm run build    # production bundle in dist/
 - Device pixel ratio capped (2 desktop / 1.5 mobile); mobile gets reduced
   particle counts and texture resolution.
 
-Design & build — Abhishek Gupta
+Design & build — Abhishek
